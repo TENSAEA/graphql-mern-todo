@@ -76,6 +76,7 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
       httpOnly: true, // Prevents JavaScript access to cookies
+      sameSite: "lax",
     },
     store: store,
   })
@@ -93,6 +94,11 @@ const server = new ApolloServer({
   typeDefs: [userTypeDef, todoTypeDefs],
   resolvers: [userResolvers, todoResolvers],
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  debug: true, // Enable debugging
+  formatError: (error) => {
+    console.error("Apollo Server error:", error); // Log Apollo Server errors
+    return error;
+  },
 });
 // Start the Apollo Server and apply middleware
 await server.start();

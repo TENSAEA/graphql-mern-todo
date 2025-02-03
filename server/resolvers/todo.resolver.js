@@ -2,16 +2,16 @@ import Todo from "../models/todo.model.js";
 
 const resolvers = {
   Query: {
-    todos: async () => {
-      return await Todo.find();
+    todos: async (_, { userID }) => {
+      return await Todo.find({ userID });
     },
     todo: async (_, { id }) => {
       return await Todo.findById(id);
     },
   },
   Mutation: {
-    createTodo: async (_, { title }) => {
-      const newTodo = new Todo({ title });
+    createTodo: async (_, { title, userID }) => {
+      const newTodo = new Todo({ title, userID });
       await newTodo.save();
       return newTodo;
     },

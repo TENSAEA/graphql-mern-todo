@@ -7,15 +7,16 @@ const typeDefs = gql`
     completed: Boolean!
     createdAt: String!
     updatedAt: String!
+    userID: ID!
   }
 
   type Query {
-    todos: [Todo]
+    todos(userID: ID!): [Todo]
     todo(id: ID!): Todo
   }
 
   type Mutation {
-    createTodo(title: String!): Todo
+    createTodo(title: String!, userID: ID!): Todo
     updateTodo(id: ID!, title: String, completed: Boolean): Todo
     deleteTodo(id: ID!): Todo
   }

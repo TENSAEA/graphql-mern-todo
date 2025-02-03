@@ -71,13 +71,74 @@ const userResolver = {
         throw new Error(err.message || "Internal server error");
       }
     },
+    // logout: async (_, __, context) => {
+    //   try {
+    //     console.log("Logout initiated"); // Debugging: Log start of logout
+    //     await context.logout();
+    //     console.log("Passport logout completed"); // Debugging: Log after passport logout
+
+    //     // Properly await session destruction
+    //     await new Promise((resolve, reject) => {
+    //       context.req.session.destroy((err) => {
+    //         if (err) {
+    //           console.error("Session destruction error:", err); // Debugging: Log session destruction error
+    //           reject(err);
+    //         } else {
+    //           console.log("Session destroyed successfully"); // Debugging: Log successful session destruction
+    //           resolve();
+    //         }
+    //       });
+    //     });
+
+    //     // Clear the session cookie
+    //     context.res.clearCookie("connect.sid");
+    //     console.log("Session cookie cleared"); // Debugging: Log cookie clearing
+
+    //     return { message: "Logged out successfully" };
+    //   } catch (err) {
+    //     console.error("Error in logout:", err); // Debugging: Log any errors
+    //     throw new Error(err.message || "Internal server error");
+    //   }
+    // },
     logout: async (_, __, context) => {
       try {
-        await context.logout();
-        context.req.session.destroy((err) => {
-          if (err) throw err;
+        const { req, res } = context;
+
+        // Ensure the logout method is available
+        if (!req.logout) {
+          throw new Error("Logout method not available");
+        }
+
+        // Log out the user
+        // await new Promise((resolve, reject) => {
+        //   req.logout((err) => {
+        //     if (err) {
+        //       console.error("Error in logout:", err);
+        //       reject(err);
+        //     } else {
+        //       resolve();
+        //     }
+        //   });
+        // });
+
+        // Destroy the session
+        await new Promise((resolve, reject) => {
+          req.session.destroy((err) => {
+            if (err) {
+              console.error("Error destroying session:", err);
+              reject(err);
+            } else {
+              resolve();
+            }
+          });
         });
-        context.res.clearCookie("connect.sid");
+
+        // Clear the session cookie
+        res.clearCookie("connect.sid", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+        });
 
         return { message: "Logged out successfully" };
       } catch (err) {
