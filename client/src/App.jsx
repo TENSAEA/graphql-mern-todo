@@ -7,6 +7,9 @@ import { GET_AUTH_USER } from './graphql/queries/user.query';
 import { useQuery } from '@apollo/client';
 import { Toaster } from "react-hot-toast";
 import { RotatingLines } from "react-loader-spinner";
+import Homepage from './components/Homepage';
+import TimezoneChecker from './components/TimezoneChecker';
+import Dashboard from './components/Dashboard';
 
 const App = () => {
 
@@ -32,13 +35,15 @@ const App = () => {
 
   
   return (
-
     <Router>
       {/* {data?.authUser && <Header/>} */}
     <Routes>
-        <Route path="/" element={data?.authUser ? <Navigate to="/todos" />: <Signup />} />
-        <Route path="/login" element={!data?.authUser ? <Login /> : <Navigate to="/todos" />} />
-        <Route path="/todos" element={data?.authUser ? (<TodoList userID={data?.authUser._id}/>): (<Navigate to="/login" />)} />
+        <Route path="/" element={data?.authUser? <Navigate to="/dashboard" />: <Homepage />} />
+        <Route path="/Signup" element={data?.authUser ? <Navigate to="/dashboard" />: <Signup />} />
+        <Route path="/login" element={!data?.authUser ? <Login /> : <Navigate to="/dashboard" />} />
+        <Route path="/todos" element={data?.authUser ? (<TodoList userID={data?.authUser._id}/>): (<Navigate to="/" />)} />
+        <Route path="/timezone" element={data?.authUser ? (<TimezoneChecker />): (<Navigate to="/" />)} />
+        <Route path="/dashboard" element={data?.authUser ? (<Dashboard />): (<Navigate to="/" />)} />
       </Routes>
       <Toaster />
 

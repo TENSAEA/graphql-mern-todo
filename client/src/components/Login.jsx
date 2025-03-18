@@ -12,7 +12,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const [login, { loading, error }] = useMutation(LOGIN, {
+  const [login, { loading}] = useMutation(LOGIN, {
     refetchQueries: [{ query: GET_AUTH_USER }],
     onCompleted: () => {
       toast.success("Login successful!");
@@ -20,6 +20,7 @@ const Login = () => {
     onError: (error) => {
       console.error(error);
       toast.error("Failed to login. Please try again.");
+      navigate('/login');
     }
   });
 
@@ -41,7 +42,6 @@ const Login = () => {
     </div>
   );
 
-  if (error) return <p>Error: {error.message}</p>;
   
 
   const handleSubmit = async (e) => {
@@ -139,7 +139,7 @@ const Login = () => {
       d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
     />
   </svg>
-  <span onClick={() => navigate("/")} >Sign Up</span>
+  <span onClick={() => navigate("/signup")} >Sign Up</span>
 </button>
         </div>
         
