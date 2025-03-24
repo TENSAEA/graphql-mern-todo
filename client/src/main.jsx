@@ -5,7 +5,7 @@ import App from './App.jsx'
 import './index.css'
 
 const client = new ApolloClient({
-  uri: 'https://scandiweb-ready.vercel.app/api/graphql',
+  uri: 'https://scandiweb-ready.vercel.app/graphql',
   cache: new InMemoryCache(),
   credentials: "include", // This tells Apollo Client to send cookies along with every request to the server.
 });
