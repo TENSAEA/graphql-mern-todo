@@ -107,7 +107,7 @@ await server.start();
 app.use(
   "/graphql",
   cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     credentials: true, // Allow credentials (cookies)
   }),
   bodyParser.json(),
@@ -126,7 +126,9 @@ connectDB();
 await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve))
   .then(async () => {
     // Log the server start message
-    console.log(`Server is running on http://localhost:${PORT}/graphql`);
+    console.log(
+      `Server is running on http://scandiweb-ready.vercel.app:${PORT}/graphql`
+    );
   })
   .catch((err) => {
     console.error("Error starting server:", err);
