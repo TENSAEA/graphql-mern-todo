@@ -4,6 +4,7 @@ import { SIGN_UP } from '../graphql/mutations/user.mutation';
 import { GET_AUTH_USER } from '../graphql/queries/user.query';
 import toast from "react-hot-toast";
 import { useNavigate } from 'react-router-dom';
+import { RotatingLines } from "react-loader-spinner";
 
 // import { useMutation } from '@apollo/client';
 // import { REGISTER_USER } from '../graphql/mutations';
@@ -14,12 +15,32 @@ const Signup = () => {
 
 const navigate = useNavigate();
 
-const [signup, { loading, error}] = useMutation(SIGN_UP, {
+const [signup, { loading}] = useMutation(SIGN_UP, {
   refetchQueries: [{ query: GET_AUTH_USER }]
 });
+  function Loader() {
+    return (
+      <RotatingLines
+        strokeColor="grey"
+        strokeWidth="5"
+        animationDuration="0.75"
+        width="96"
+        visible={true}
+      />
+    )
+  }
 
-if (loading) return <p>Loading...</p>;
-if (error) return <p>Error :</p>;
+  if (loading) return (
+    <div className="flex justify-center items-center h-screen">
+      <Loader />
+    </div>
+  );
+
+if (loading) return (
+    <div className="flex justify-center items-center h-screen">
+      <Loader />
+    </div>
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
